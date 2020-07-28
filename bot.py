@@ -1,15 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 import requests
 from bs4 import BeautifulSoup
 import random
 import numpy
 import discord 
 from discord.ext import commands
+
 client = commands.Bot(command_prefix = '$')
 
 TOKEN=''# you can enter your Token here
