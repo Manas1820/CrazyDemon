@@ -12,7 +12,7 @@ import discord
 from discord.ext import commands
 client = commands.Bot(command_prefix = '$')
 
-TOKEN='NzM3MDMwNTcyNDI1MzQ3MDcy.Xx3bNQ.ge7PeteW7GenQuGfQveYLu0xBM0'
+TOKEN=''# you can enter your Token here
 
 @client.event
 
