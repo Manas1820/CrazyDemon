@@ -3,35 +3,29 @@ from bs4 import BeautifulSoup
 import random
 import numpy
 import discord 
-from discord.ext import commands
-
+from discord.ext import commands,tasks
 client = commands.Bot(command_prefix = '$')
 
-TOKEN=''# you can enter your Token here
+TOKEN='' # your bot token
 
 @client.event
-
 async def on_ready():
     print("bot is ready .")
 
 @client.event
-
 async def on_member_join(member):
     print(f"{member} joined the server !")
 
 @client.event
-
 async def on_member_remove(member):
     print(f"{member} left the server !")
 
 @client.command()
-
 async def ping(ctx):
     await ctx.send(f"Hey your ping is {round(client.latency*1000)} ms")
 
-@client.command(aliases=['Quote','quotes','Quotes'])
-
-async def quote(ctx):
+@client.command(aliases=['Quote','quotes','Quotes','quote'])
+async def _quote(ctx):
     QUOTES=[]
     url='https://www.brainyquote.com/quote_of_the_day'
     headers={
@@ -49,7 +43,39 @@ async def quote(ctx):
 
     await ctx.send(f"{random.choice(QUOTES)}")
 
+@client.event
+async def on_command_error(ctx,error):
+    if isinstance(error,commands.MissingPermissions):
+        await ctx.send('Invalid Request , You do not have the permission to proceed')
+        pass   
+    if isinstance(error,commands.CommandNotFound):
+        await ctx.send('Invalid Command , Please use $help to know more')
+     
+
+@client.command()
+@commands.has_permissions(manage_messages=True)      
+async def clear(ctx,amount:int):
+    await ctx.channel.purge(limit=amount)
+
+@clear.error
+async def clear_error(ctx,error):
+    if isinstance(error,commands.MissingRequiredArgument):
+        await ctx.send('Please pass in all required argument')
+
+
+@client.command()
+async def assist(ctx):
+    await ctx.send('''
+     $assist - Displays all the function with its use .
+    $quotes- Display Random quotes daily. 
+    $clear int-clears the int amount of lines specified .
+    $ping - to know the current ping
+    ''')
+
+
+
 client.run(TOKEN)
+
 
 
 
